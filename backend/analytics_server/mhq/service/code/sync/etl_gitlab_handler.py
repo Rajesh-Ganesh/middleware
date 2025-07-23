@@ -1,6 +1,7 @@
 import asyncio
 from datetime import datetime
 from typing import List, Dict, Optional, Tuple, Set, Any
+from os import getenv
 from uuid import uuid4
 from mhq.utils.diffparser import parse_gitlab_diffs
 from mhq.exapi.models.gitlab import (
@@ -366,7 +367,7 @@ class GitlabETLHandler(CodeProviderETLHandler):
 
 def get_gitlab_etl_handler(org_id: str) -> GitlabETLHandler:
     def _get_custom_gitlab_domain() -> Optional[str]:
-        DEFAULT_DOMAIN = "https://gitlab.com"
+        DEFAULT_DOMAIN = getenv("GITLAB_URL", "https://gitlab.com")
         core_repo_service = CoreRepoService()
         integrations = core_repo_service.get_org_integrations_for_names(
             org_id, [UserIdentityProvider.GITLAB.value]

@@ -5,7 +5,7 @@ import { Row } from '@/constants/db';
 import { Integration } from '@/constants/integrations';
 import { BaseRepo } from '@/types/resources';
 import { db, getFirstRow } from '@/utils/db';
-import { DEFAULT_GH_URL } from '@/constants/urls';
+import { DEFAULT_GH_URL, DEFAULT_GL_URL } from '@/constants/urls';
 import { dec } from '@/utils/auth-supplementary';
 
 type GithubRepo = {
@@ -173,7 +173,7 @@ interface RepoResponse {
   errors?: { message: string }[];
 }
 
-const GITLAB_API_URL = 'https://gitlab.com/api/graphql';
+const GITLAB_API_URL = `${DEFAULT_GL_URL}/api/graphql`;
 
 export const searchGitlabRepos = async (
   pat: string,

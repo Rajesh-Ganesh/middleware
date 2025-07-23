@@ -5,6 +5,7 @@ jest.mock('@/api/internal/[org_id]/utils', () => ({
 
   import { fetchRepos, selectAllRepos } from '@/api/internal/[org_id]/git_org_repos'
   import { Integration } from '@/constants/integrations'
+  import { DEFAULT_GL_URL } from '@/constants/urls'
   import * as utils from '@/api/internal/[org_id]/utils'
 
   type FetchResponse = { ok: boolean; json: () => Promise<any> }
@@ -71,7 +72,7 @@ jest.mock('@/api/internal/[org_id]/utils', () => ({
     })
 
     it('fetches a single page of GitLab projects', async () => {
-      (utils.replaceURL as jest.Mock).mockResolvedValue('https://gitlab.com/api/graphql')
+      (utils.replaceURL as jest.Mock).mockResolvedValue(`${DEFAULT_GL_URL}/api/graphql`)
 
       const glResponse: any = {
         data: {
@@ -102,9 +103,9 @@ jest.mock('@/api/internal/[org_id]/utils', () => ({
 
       const result = await fetchRepos({ provider: Integration.GITLAB, token: 'gl-token', org: 'my-group', first: 20, after: null})
 
-      expect(utils.replaceURL).toHaveBeenCalledWith('https://gitlab.com/api/graphql')
+      expect(utils.replaceURL).toHaveBeenCalledWith(`${DEFAULT_GL_URL}/api/graphql`)
       expect(global.fetch).toHaveBeenCalledWith(
-        'https://gitlab.com/api/graphql',
+        `${DEFAULT_GL_URL}/api/graphql`,
         expect.objectContaining({
           method: 'POST',
           headers: expect.objectContaining({ Authorization: 'Bearer gl-token', 'Content-Type': 'application/json' }),

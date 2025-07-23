@@ -5,6 +5,7 @@ import {
   getGitHubGraphQLUrl,
   replaceURL,
 } from '@/api/internal/[org_id]/utils'
+import { DEFAULT_GL_URL } from '@/constants/urls'
 import { Endpoint } from '@/api-helpers/global'
 import { Integration } from '@/constants/integrations'
 import { BaseRepo } from '@/types/resources'
@@ -153,7 +154,7 @@ export async function fetchRepos(params: {
     }
   `
 
-  const gqlUrl = await replaceURL('https://gitlab.com/api/graphql')
+  const gqlUrl = await replaceURL(`${DEFAULT_GL_URL}/api/graphql`)
   const res = await fetch(gqlUrl, {
     method: 'POST',
     headers: {
