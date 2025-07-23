@@ -2,6 +2,7 @@ from collections.abc import Awaitable
 from typing import Dict, List
 import requests
 from datetime import datetime
+from os import getenv
 from requests.exceptions import HTTPError
 import aiohttp
 
@@ -13,8 +14,23 @@ class GithubRateLimitExceeded(Exception):
 
 
 class GitlabApiService:
-    def __init__(self, access_token: str, domain="https://gitlab.com"):
+    def __init__(self, access_token: str, domain: str | None = None):
+        """Service to interact with the GitLab API.
+
+        Parameters
+        ----------
+        access_token: str
+            Personal access token for the API.
+        domain: str | None, optional
+            Base domain for GitLab. If not provided, the value from the
+            ``GITLAB_URL`` environment variable is used and falls back to
+            ``https://gitlab.com``.
+        """
+
         self._token = access_token
+        default_domain = getenv("GITLAB_URL", "https://gitlab.com")
+        domain = domain or default_domain
+
         self.base_url = f"{domain}/api/v4"
         self.headers = {"Authorization": f"Bearer {self._token}"}
 

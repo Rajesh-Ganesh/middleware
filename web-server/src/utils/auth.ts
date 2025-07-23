@@ -2,7 +2,7 @@ import axios from 'axios';
 import { isNil, reject } from 'ramda';
 
 import { Integration } from '@/constants/integrations';
-import { DEFAULT_GH_URL } from '@/constants/urls';
+import { DEFAULT_GH_URL, DEFAULT_GL_URL } from '@/constants/urls';
 
 export const unlinkProvider = async (orgId: string, provider: Integration) => {
   return await axios.delete(`/api/resources/orgs/${orgId}/integration`, {
@@ -77,7 +77,7 @@ export const checkGitLabValidity = async (
   accessToken: string,
   customDomain?: string
 ) => {
-  const baseUrl = customDomain || 'https://gitlab.com';
+  const baseUrl = customDomain || DEFAULT_GL_URL;
   const url = `${baseUrl}/api/v4/personal_access_tokens/self`;
   try {
     const response = await axios.get(url, {

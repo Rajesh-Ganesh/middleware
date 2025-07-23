@@ -1,4 +1,5 @@
 from typing import Dict, List, Optional
+from os import getenv
 from github import GithubException
 from github.Organization import Organization as GithubOrganization
 
@@ -103,7 +104,7 @@ def get_external_integrations_service(
     org_id: str, user_identity_provider: UserIdentityProvider
 ):
     def _get_custom_gitlab_domain() -> Optional[str]:
-        DEFAULT_DOMAIN = "https://gitlab.com"
+        DEFAULT_DOMAIN = getenv("GITLAB_URL", "https://gitlab.com")
 
         core_repo_service = CoreRepoService()
         integrations = core_repo_service.get_org_integrations_for_names(
